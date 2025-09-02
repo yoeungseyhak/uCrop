@@ -2,6 +2,7 @@
 
     <string name="ucrop_label_original">Original</string>
     <string name="ucrop_label_edit_photo">Edit Photo</string>
+    <string name="ucrop_label_title">You can zoom and drag the image. All that is visible within the frame will be the final image.</string>
 
     <string name="ucrop_menu_crop">Crop</string>
 

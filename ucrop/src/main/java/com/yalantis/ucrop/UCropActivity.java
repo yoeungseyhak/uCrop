@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -85,6 +86,9 @@ public class UCropActivity extends AppCompatActivity {
 
     private String mToolbarTitle;
 
+    // sony
+    private String mCountTitle;
+
     // Enables dynamic coloring
     private int mToolbarColor;
     private int mStatusBarColor;
@@ -119,6 +123,9 @@ public class UCropActivity extends AppCompatActivity {
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
+
+    // sony
+    private Button mApplyButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -165,7 +172,8 @@ public class UCropActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.menu_crop).setVisible(!mShowLoader);
+        //        sony hide done menu
+        menu.findItem(R.id.menu_crop).setVisible(false);
         menu.findItem(R.id.menu_loader).setVisible(mShowLoader);
         return super.onPrepareOptionsMenu(menu);
     }
@@ -293,7 +301,10 @@ public class UCropActivity extends AppCompatActivity {
         mToolbarCancelDrawable = intent.getIntExtra(UCrop.Options.EXTRA_UCROP_WIDGET_CANCEL_DRAWABLE, R.drawable.ucrop_ic_cross);
         mToolbarCropDrawable = intent.getIntExtra(UCrop.Options.EXTRA_UCROP_WIDGET_CROP_DRAWABLE, R.drawable.ucrop_ic_done);
         mToolbarTitle = intent.getStringExtra(UCrop.Options.EXTRA_UCROP_TITLE_TEXT_TOOLBAR);
-        mToolbarTitle = mToolbarTitle != null ? mToolbarTitle : getResources().getString(R.string.ucrop_label_edit_photo);
+        // sony
+        mToolbarTitle = mToolbarTitle != null ? mToolbarTitle : getResources().getString(R.string.ucrop_label_title);
+        mCountTitle = intent.getStringExtra("count_title");
+        //
         mLogoColor = intent.getIntExtra(UCrop.Options.EXTRA_UCROP_LOGO_COLOR, ContextCompat.getColor(this, R.color.ucrop_color_default_logo));
         mShowBottomControls = !intent.getBooleanExtra(UCrop.Options.EXTRA_HIDE_BOTTOM_CONTROLS, false);
         mRootViewBackgroundColor = intent.getIntExtra(UCrop.Options.EXTRA_UCROP_ROOT_VIEW_BACKGROUND_COLOR, ContextCompat.getColor(this, R.color.ucrop_color_crop_background));
@@ -327,6 +338,25 @@ public class UCropActivity extends AppCompatActivity {
             setupScaleWidget();
             setupStatesWrapper();
         }
+
+        //
+        final TextView countTextView = findViewById(R.id.count_textview);
+        countTextView.setText(mCountTitle);
+
+        findViewById(R.id.ucrop_close_button)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                    }
+                });
+        findViewById(R.id.ucrop_apply_button)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cropAndSaveImage();
+                    }
+                });
     }
 
     /**
@@ -355,6 +385,9 @@ public class UCropActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(false);
         }
+
+        //        sony
+        getSupportActionBar().hide();
     }
 
     private void initiateRootViews() {

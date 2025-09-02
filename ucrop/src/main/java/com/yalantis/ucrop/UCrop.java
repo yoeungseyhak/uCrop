@@ -439,6 +439,14 @@ public class UCrop {
         }
 
         /**
+         sony
+         set count title
+         */
+        public void setCountTitle(@Nullable String text) {
+            mOptionBundle.putString("count_title", text);
+        }
+
+        /**
          * @param text - desired text for Toolbar title
          */
         public void setToolbarTitle(@Nullable String text) {
